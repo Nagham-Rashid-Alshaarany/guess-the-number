@@ -2,10 +2,14 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Home from './pages/Home';
+import { GameProvider } from './context';
+import GameBoard from './components/GameBoard';
 
 function App() {
   return (
-    <Home />
+    <GameProvider>
+      <GameBoard />
+    </GameProvider>
   );
 }
 

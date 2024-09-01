@@ -11,23 +11,29 @@ interface Player {
 interface GameRound {
     points: number;
     multiplier: number;
+    multiplierHistory: number[];
     players: Player[];
     speed: number;
+    isRunning: boolean,
 }
 
 interface GameContextProps {
     round: GameRound;
     setPoints: (points: number) => void;
-    setMultiplier: (multiplier: number) => void;
+    setMultiplier: (multiplier: number | ((prevMultiplier: number) => number)) => void;
     setPlayers: (players: Player[]) => void;
     setSpeed: (speed: number) => void;
+    startGame: () => void;
+    stopGame: () => void;
 }
 
 const initialState: GameRound = {
     points: 100,
-    multiplier: 1,
+    multiplier: 0,
+    multiplierHistory: [0],
     players: [],
     speed: 1,
+    isRunning: true,
 };
 
 const GameContext = createContext<GameContextProps | undefined>(undefined);
@@ -39,8 +45,15 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         setState((prevState) => ({ ...prevState, points }));
     };
 
-    const setMultiplier = (multiplier: number) => {
-        setState((prevState) => ({ ...prevState, multiplier }));
+    const setMultiplier = (multiplier: number | ((prevMultiplier: number) => number)) => {
+        setState((prevState) => {
+            const newMultiplier = typeof multiplier === 'function' ? multiplier(prevState.multiplier) : multiplier;
+            return {
+                ...prevState,
+                multiplier: newMultiplier,
+                multiplierHistory: [...prevState.multiplierHistory, newMultiplier],
+            };
+        });
     };
 
     const setPlayers = (players: Player[]) => {
@@ -50,9 +63,18 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     const setSpeed = (speed: number) => {
         setState((prevState) => ({ ...prevState, speed }));
     };
+    const startGame = () => {
+        setState((prevState) => ({ ...prevState, isRunning: true }));
+    };
+
+    const stopGame = () => {
+        setState((prevState) => ({ ...prevState, isRunning: false }));
+    };
 
     return (
-        <GameContext.Provider value={{ round: state, setPoints, setMultiplier, setPlayers, setSpeed }}>
+        <GameContext.Provider
+            value={{ round: state, setPoints, setMultiplier, setPlayers, setSpeed, startGame, stopGame }}
+        >
             {children}
         </GameContext.Provider>
     );
