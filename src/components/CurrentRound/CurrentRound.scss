@@ -1,0 +1,78 @@
+@import '../../styles/variables.scss';
+
+// src/components/CurrentRound/CurrentRound.scss
+
+.current-round {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    .label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        img {
+            max-width: 15px;
+            display: block;
+        }
+
+        label {
+            display: block;
+            color: $white;
+            font-weight: bold;
+        }
+    }
+
+    .current-round-table {
+        background-color: unset;
+        color: $text-color;
+        border-radius: 8px;
+        border: 1px solid $text-color;
+
+        .ant-table {
+            background-color: transparent;
+            border-radius: 8px;
+        }
+        .ant-table-container{
+            border: unset !important;
+        }
+        .ant-table-cell{
+            text-align: center;
+            border-inline-end: unset !important;
+        }
+        .ant-table-thead>tr>th {
+            background-color: unset;
+            color: $text-color;
+            font-weight: bold;
+            border-inline-end: unset !important;
+            border-bottom: unset;
+        }
+        
+        .ant-table-tbody>tr>td {
+            background-color: $box-bg-color;
+            color: $white;
+            border: unset;
+        }
+        
+        .ant-table-tbody>tr:nth-child(odd)>td {
+            background-color: $light-gray;
+        }
+
+        .ant-table-tbody > tr:nth-child(1) > td {
+            background-color: $text-color ;
+        }
+
+        .ant-table-tbody>tr>td {
+            font-size: 16px; 
+            padding: 10px 15px;
+        }
+
+        .won {
+            color: $green;
+          }
+      
+          .lost {
+            color: $primary-color;
+          }
+    }
+}
