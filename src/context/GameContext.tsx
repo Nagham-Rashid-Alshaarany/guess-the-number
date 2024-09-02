@@ -33,7 +33,7 @@ const initialState: GameRound = {
     multiplierHistory: [0],
     players: [],
     speed: 1,
-    isRunning: true,
+    isRunning: false,
 };
 
 const GameContext = createContext<GameContextProps | undefined>(undefined);
@@ -48,15 +48,12 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     const setMultiplier = (multiplier: number | ((prevMultiplier: number) => number)) => {
         setState((prevState) => {
             const newMultiplier = typeof multiplier === 'function' ? multiplier(prevState.multiplier) : multiplier;
-            // Check if the newMultiplier is an integer and is within the range you care about (1 to 10).
-            const shouldStoreMultiplier = Number.isInteger(newMultiplier) && newMultiplier >= 1 && newMultiplier <= 10;
 
             return {
                 ...prevState,
                 multiplier: newMultiplier,
-                multiplierHistory: shouldStoreMultiplier 
-                    ? [...prevState.multiplierHistory, newMultiplier] 
-                    : prevState.multiplierHistory,
+                multiplierHistory: [...prevState.multiplierHistory, newMultiplier]
+
             };
         });
     };

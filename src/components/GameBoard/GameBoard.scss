@@ -1,1 +1,19 @@
-@import '../../styles/variables.scss'
+@import '../../styles/variables.scss';
+
+.game-board {
+    background-color: $box-bg-color;
+    padding: '20px';
+    border-radius: '8px';
+    position: relative;
+
+    .x-value {
+        text-align: center;
+        color: $white;
+        font-size: 48px;
+        position: absolute;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
