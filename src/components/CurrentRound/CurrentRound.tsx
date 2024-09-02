@@ -3,7 +3,7 @@ import { Table } from 'antd';
 import { useGameContext } from '../../context';
 import './CurrentRound.scss';
 
-const CurrentRound: React.FC = () => {
+export default function CurrentRound(){
     const { round } = useGameContext();
     const { players } = round;
 
@@ -57,5 +57,3 @@ const CurrentRound: React.FC = () => {
         </div>
     );
 };
-
-export default CurrentRound;

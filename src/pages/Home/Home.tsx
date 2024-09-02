@@ -3,6 +3,7 @@ import PlayerInputs from "../../components/PlayerInputs";
 import GameBoard from "../../components/GameBoard";
 import SpeedSlider from "../../components/SpeedSlider";
 import CurrentRound from "../../components/CurrentRound";
+import Ranking from "../../components/Ranking";
 
 export default function Home() {
     return (
@@ -11,6 +12,7 @@ export default function Home() {
             <CurrentRound/>
             <SpeedSlider/>
             <GameBoard />
+            <Ranking/>
         </>
     )
 }
