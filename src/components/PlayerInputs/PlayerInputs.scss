@@ -1,16 +1,76 @@
 @import '../../styles/variables.scss';
 
 .player-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: $white;
+
+  .inputs {
     display: flex;
-    gap: 10px;
+    flex-direction: row;
     align-items: center;
-    margin-bottom: 20px;
-  
-    .input-number {
-      width: 150px;
-    }
-  
-    .ant-btn {
-      height: 40px;
+    justify-content: space-between;
+    gap: 14px;
+
+    .custom-input-number {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: calc(50% - 14px);
+      border: 1px solid $text-color;
+      background: linear-gradient(90deg, #15191F 0%, #434952 100%);
+      border-radius: 8px;
+
+      label {
+        font-size: 20px;
+        color: $text-color;
+      }
+
+      .input-number {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 4px;
+        padding: 8px;
+
+        .ant-input-number {
+          width: 100%
+        }
+
+        img {
+          max-width: 40px;
+          border: 1px solid $text-color;
+          border-radius: 8px;
+          background-color: $background-color;
+          cursor: pointer;
+        }
+
+      }
     }
   }
+
+  .ant-btn {
+    height: 50px;
+    background: $gradient;
+    font-size: 20px;
+
+    &:hover {
+      background: $gradient !important;
+
+    }
+  }
+
+  .ant-btn:disabled {
+    color: $white;
+    background: $text-color;
+    box-shadow: none;
+    border: unset;
+
+    &:hover {
+      background: $text-color !important;
+    }
+  }
+
+}

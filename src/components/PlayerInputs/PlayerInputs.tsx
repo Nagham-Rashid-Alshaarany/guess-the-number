@@ -1,62 +1,80 @@
 import React, { useState } from 'react';
-import { InputNumber, Button, notification } from 'antd';
+import { InputNumber, Button } from 'antd';
 import { useGameContext } from '../../context';
+
 import './PlayerInputs.scss';
 
 export default function PlayerInputs() {
-  const { round, setPoints, setMultiplier, setPlayers } = useGameContext();
+  const { round, setPoints, setMultiplier, startGame, setPlayers } = useGameContext();
   const [points, setLocalPoints] = useState<number>(0);
   const [predictedMultiplier, setPredictedMultiplier] = useState<number>(1.0);
 
   const handleBet = () => {
-    if (points > round.points) {
-      notification.error({
-        message: 'Insufficient Points',
-        description: 'You do not have enough points to place this bet.',
-      });
-      return;
-    }
 
-    // Update global points
     setPoints(round.points - points);
+    startGame();
 
-    // Update players' list
     const newPlayer = {
       name: 'You',
       pointsPlaced: points,
       predictedMultiplier: predictedMultiplier,
-      won: false, 
+      won: false,
       score: 0,
     };
 
     setPlayers([...round.players, newPlayer]);
-
-    notification.success({
-      message: 'Bet Placed',
-      description: `You placed ${points} points on a multiplier of ${predictedMultiplier}x.`,
-    });
+  };
+  const onPointsIncrement = () => {
+    setLocalPoints((value) => Math.min(value + 1, round.points))
   };
 
+  const onPointsDecrement = () => {
+    setLocalPoints((value) => Math.max(value - 1, 0))
+  };
+  const onMultiplierIncrement = () => {
+    setPredictedMultiplier((value) => Math.min(value + 0.25, round.points))
+  };
+
+  const onMultiplierDecrement = () => {
+    setPredictedMultiplier((value) => Math.max(value - 0.25, 0))
+  };
   return (
     <div className="player-inputs">
-      <InputNumber
-        min={1}
-        max={round.points}
-        value={points}
-        onChange={(value) => setLocalPoints(value ?? 0)}
-        placeholder="Enter points"
-        className="input-number"
-      />
-      <InputNumber
-        min={1}
-        step={0.01}
-        value={predictedMultiplier}
-        onChange={(value) => setPredictedMultiplier(value ?? 0)}
-        placeholder="Predict multiplier"
-        className="input-number"
-      />
-      <Button type="primary" onClick={handleBet}>
-        start
+      <div className='inputs'>
+        <div className='custom-input-number'>
+          <div className="label">Points</div>
+          <div className='input-number'>
+            <img src={"/icons/arrow-dawn.svg"} onClick={onPointsDecrement} />
+            <InputNumber
+              min={1}
+              step={1}
+              max={round.points}
+              value={points}
+              onChange={(value) => setLocalPoints(value ?? 0)}
+              controls={false}
+            />
+            <img src={"/icons/arrow-up.svg"} onClick={onPointsIncrement} />
+          </div>
+        </div>
+
+        <div className='custom-input-number'>
+          <div className="label">Multiplier</div>
+          <div className='input-number'>
+            <img src={"/icons/arrow-dawn.svg"} onClick={onMultiplierDecrement} />
+            <InputNumber
+              min={0}
+              step={0.25}
+              max={10}
+              value={predictedMultiplier}
+              onChange={(value) => setPredictedMultiplier(value ?? 0)}
+              controls={false}
+            />
+            <img src={"/icons/arrow-up.svg"} onClick={onMultiplierIncrement} />
+          </div>
+        </div>
+      </div>
+      <Button type="primary" onClick={handleBet} disabled={round.isRunning} >
+        {round.isRunning ? "Started" : "Start"}
       </Button>
     </div>
   );
