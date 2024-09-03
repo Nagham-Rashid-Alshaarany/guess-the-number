@@ -1,1 +1,1 @@
-export {default} from './useWebSocket'
+export {useWebSocket} from './useWebSocket'

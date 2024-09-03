@@ -40,6 +40,7 @@ export default function CurrentRound(){
         },
     ];
 
+    console.log(players)
     return (
         <div className="current-round">
             <div className='label'>

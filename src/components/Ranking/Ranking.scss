@@ -71,6 +71,11 @@
         }
         .current-player-row > td {
             background-color: $text-color !important; 
+            
           }
+        
+          .ant-table-tbody > tr:hover > td {
+            background-color: $box-bg-color;
+        }
     }
 }
