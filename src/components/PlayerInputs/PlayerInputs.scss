@@ -22,8 +22,8 @@
       background: linear-gradient(90deg, #15191F 0.01%, #1F2531 45.5%, #202632 98.99%);
       border-radius: 8px;
 
-      label {
-        font-size: 16px;
+      .label {
+        font-size: 14px;
         color: $text-color;
       }
 
@@ -39,8 +39,11 @@
           width: 100%
         }
 
+        .ant-input-number-input{
+          padding: 0 11px;
+        }
         img {
-          max-width: 40px;
+          max-width: 30px;
           border: 1px solid $text-color;
           border-radius: 8px;
           background-color: $background-color;

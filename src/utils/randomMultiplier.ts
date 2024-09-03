@@ -2,7 +2,7 @@ export function generateRandomMultiplier(
     start: number = 1.0,
     max: number = 10.0,
     increaseRate: number = 0.01,
-    freezeProbability: number = 0.01
+    freezeProbability: number =3
   ): number {
     let currentMultiplier = start;
     let hasFrozen = false;
