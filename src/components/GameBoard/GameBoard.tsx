@@ -57,7 +57,7 @@ export default function GameBoard() {
             <div className='x-value' >
                 {multiplier.toFixed(2)}x
             </div>
-            <ResponsiveContainer width="100%" height={600}>
+            <ResponsiveContainer width="100%" height={500}>
 
                 <LineChart
                     data={normalizedData}

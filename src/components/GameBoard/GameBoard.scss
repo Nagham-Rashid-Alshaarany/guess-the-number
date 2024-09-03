@@ -2,18 +2,20 @@
 
 .game-board {
     background-color: $box-bg-color;
-    padding: '20px';
-    border-radius: '8px';
+    padding: 20px;
+    border: 1px solid $text-color;
+    border-radius: 8px;
     position: relative;
 
     .x-value {
         text-align: center;
         color: $white;
         font-size: 48px;
+        font-weight: bold;
         position: absolute;
         position: absolute;
-        top: 50%;
+        top: 30%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -70%);
     }
 }

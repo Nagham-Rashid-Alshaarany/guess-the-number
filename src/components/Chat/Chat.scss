@@ -33,9 +33,15 @@
     padding: 10px;
     border-radius: 8px;
     color: $white;
+    height: 184px;
+    max-height: 100%;
+    overflow-y: hidden;
 
     .ant-list-item {
       justify-content: unset;
+    }
+    .ant-empty-normal{
+      display: none;
     }
 
     .chat-message-item {
@@ -43,14 +49,12 @@
       align-items: center;
 
       .chat-sender {
-        color: $primary-color;
         margin-right: 8px;
         font-weight: bold;
       }
 
       .chat-message {
-        background-color: $light-gray;
-        color: $white; // White text inside the bubble
+        color: $white; 
         padding: 6px 10px;
         border-radius: 8px;
       }
@@ -63,6 +67,8 @@
     gap: 10px;
     padding: 10px;
     background-color: $light-gray;
+    border-end-end-radius: 8px;
+    border-end-start-radius: 8px;
 
     .chat-input {
       flex: 1;

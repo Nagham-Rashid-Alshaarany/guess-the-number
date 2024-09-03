@@ -1,0 +1,42 @@
+@import '../../styles/variables.scss';
+
+.home {
+    margin: 50px auto;
+    max-width: 1500px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .player-controls {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        width: 100%;
+
+        .pl-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 50%;
+        }
+
+        .pl-info {
+            width: -webkit-fill-available;
+        }
+    }
+
+    .results {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        gap: 20px;
+
+        .chat {
+            width: -webkit-fill-available;
+        }
+
+        .ranking {
+            width: 50%;
+        }
+    }
+}
