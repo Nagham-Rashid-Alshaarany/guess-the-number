@@ -1,0 +1,28 @@
+@import '../../styles/variables.scss';
+
+.player-info {
+    display: flex;
+    flex-direction: row;
+    gap: 14px;
+
+    .item {
+        display: flex;
+        align-items: center;
+        width: calc(35% - 14px);
+        border: 1px solid $text-color;
+        background: linear-gradient(90deg, #15191F 0.01%, #1F2531 45.5%, #202632 98.99%);
+        border-radius: 8px;
+        padding: 4px;
+        gap: calc(100% / 2 - 70px);
+
+        img {
+            max-width: 70px;
+        }
+
+        span {
+            color: $white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+    }
+}

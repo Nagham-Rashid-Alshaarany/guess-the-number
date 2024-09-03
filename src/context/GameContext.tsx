@@ -42,7 +42,7 @@ interface GameContextProps {
 }
 
 const initialState: GameRound = {
-    points: 100,
+    points: 1000,
     multiplier: 0,
     multiplierHistory: [0],
     players: [],
