@@ -1,1 +1,1 @@
-export {default} from './randomMultiplier'
+export {generateRandomMultiplier} from './randomMultiplier'

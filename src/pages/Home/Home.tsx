@@ -9,10 +9,16 @@ import { useGameContext } from "../../context";
 import './Home.scss'
 import PlayerInfo from "../../components/PlayerInfo";
 import Welcome from "../../components/Welcome";
+import { generateRandomMultiplier } from "../../utils";
 
 export default function Home() {
-    const { generateAutoPlayers, scheduleAutoPlayerMessages } = useGameContext();
-    const [newRound, setNewRound] = useState(false)
+    const {
+        generateAutoPlayers,
+        scheduleAutoPlayerMessages,
+        newGame, round, setPoints,
+        setStop
+    } = useGameContext();
+
     useEffect(() => {
         generateAutoPlayers();
         scheduleAutoPlayerMessages();
@@ -21,14 +27,16 @@ export default function Home() {
 
     const handleAcceptPlayerName = (name: string) => {
         setPlayerName(name);
-        setNewRound(true);
+        newGame();
+        setPoints(1000);
+        setStop(generateRandomMultiplier())
     };
 
     return (
         <div className="home">
             <div className="player-controls">
                 <div className="pl-inputs">
-                    {newRound ?
+                    {round.started ?
                         <>
                             <PlayerInputs />
                             <CurrentRound />
@@ -39,7 +47,7 @@ export default function Home() {
 
                 </div>
                 <div className="pl-info">
-                    <PlayerInfo name={playerName}/>
+                    <PlayerInfo name={playerName} />
                     <GameBoard />
                 </div>
             </div>

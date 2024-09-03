@@ -7,7 +7,7 @@ const SpeedSlider: React.FC = () => {
     const { round, setSpeed } = useGameContext();
 
     const handleSpeedChange = (value: number) => {
-        setSpeed(value);
+        setSpeed(100 / value);
     };
 
     return (

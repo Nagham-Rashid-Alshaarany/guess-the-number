@@ -25,6 +25,8 @@ interface GameRound {
     speed: number;
     isRunning: boolean;
     autoPlayersGenerated: boolean,
+    started: boolean,
+    stop: number
 }
 
 interface GameContextProps {
@@ -39,10 +41,12 @@ interface GameContextProps {
     stopGame: () => void;
     generateAutoPlayers: () => void;
     scheduleAutoPlayerMessages: () => void;
+    newGame: () => void;
+    setStop: (points: number) => void;
 }
 
 const initialState: GameRound = {
-    points: 1000,
+    points: 0,
     multiplier: 0,
     multiplierHistory: [0],
     players: [],
@@ -50,6 +54,8 @@ const initialState: GameRound = {
     speed: 1,
     isRunning: false,
     autoPlayersGenerated: false,
+    started: false,
+    stop: 0.1
 };
 
 const GameContext = createContext<GameContextProps | undefined>(undefined);
@@ -126,7 +132,12 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     const stopGame = () => {
         setState((prevState) => ({ ...prevState, isRunning: false }));
     };
-
+    const newGame = () => {
+        setState((prevState) => ({ ...prevState, started: true }));
+    };
+    const setStop = (stop: number) => {
+        setState((prevState) => ({ ...prevState, stop }));
+    };
     const sendAutoPlayerMessage = (autoPlayerName: string) => {
         const autoPlayerMessages = [
             "I'm going to win this round!",
@@ -165,6 +176,8 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
                 setSpeed,
                 startGame,
                 stopGame,
+                newGame,
+                setStop,
                 generateAutoPlayers,
                 scheduleAutoPlayerMessages
             }}        >

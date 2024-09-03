@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useGameContext } from '../../context';
 import './GameBoard.scss';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, DotProps } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, DotProps } from 'recharts';
 
 interface CustomDotProps extends DotProps {
     index: number;
@@ -14,7 +14,6 @@ const CustomDot = ({ cx, cy, index, dataLength }: CustomDotProps) => {
     if (!isLastPoint) {
         return null;
     }
-
     return (
         <circle cx={cx} cy={cy} r={10} fill="#ffc107" />
     );
@@ -22,7 +21,7 @@ const CustomDot = ({ cx, cy, index, dataLength }: CustomDotProps) => {
 
 export default function GameBoard() {
     const { round, setMultiplier, stopGame } = useGameContext();
-    const { multiplier, multiplierHistory, speed, isRunning } = round;
+    const { multiplier, multiplierHistory, speed, isRunning ,stop} = round;
 
     useEffect(() => {
         let interval: NodeJS.Timeout | null = null;
@@ -30,10 +29,10 @@ export default function GameBoard() {
         if (isRunning) {
             interval = setInterval(() => {
                 setMultiplier((prevMultiplier) => {
-                    const newMultiplier = parseFloat((prevMultiplier + 0.01 * speed).toFixed(2));
-                    if (newMultiplier >= 10) {
+                    const newMultiplier = parseFloat((prevMultiplier + 0.01).toFixed(2));
+                    if (newMultiplier >= stop) {
                         stopGame();
-                        return newMultiplier;
+                        return stop;
                     }
                     return newMultiplier;
                 });
@@ -45,7 +44,7 @@ export default function GameBoard() {
                 clearInterval(interval);
             }
         };
-    }, [isRunning, speed, setMultiplier, stopGame]);
+    }, [isRunning]);
 
     const normalizedData = multiplierHistory.map((m) => ({
         x: m,
