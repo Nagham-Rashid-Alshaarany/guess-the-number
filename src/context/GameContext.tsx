@@ -8,7 +8,7 @@ interface Player {
     won: boolean;
     score: number;
     isAutoPlayer?: boolean;
-    color?: string;
+    color?: { sender: string, message: string };
 }
 
 interface ChatMessage {
@@ -99,8 +99,8 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         if (state.autoPlayersGenerated) return;
 
         const autoPlayerNames = ['CPU 1', 'CPU 2', 'CPU 3', 'CPU 4'];
-        const autoPlayerColors = ['#FF5733', '#33FF57', '#3357FF', '#F33FF5'];
-        const autoPlayers = autoPlayerNames.map((name,index) => ({
+        const autoPlayerColors = [{ sender: '#FF5733', message: '#707783' }, { sender: '#33FF57', message: '#696B6E' }, { sender: '#3357FF', message: '#464A52' }, { sender: '#F33FF5', message: '#1F252C' }];
+        const autoPlayers = autoPlayerNames.map((name, index) => ({
             name,
             pointsPlaced: Math.floor(Math.random() * 100) + 1,
             predictedMultiplier: parseFloat((Math.random() * 10).toFixed(2)),
@@ -111,7 +111,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         }));
 
         setPlayers([...state.players, ...autoPlayers]);
-
+        console.log(state.players)
         setState((prevState) => ({
             ...prevState,
             autoPlayersGenerated: true,
@@ -146,7 +146,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         state.players
             .filter((player) => player.isAutoPlayer)
             .forEach((autoPlayer) => {
-                const randomInterval = Math.random() * (10000 - 3000) + 3000;
+                const randomInterval = Math.random() * (10000 - 2500) + 2500;
 
                 setTimeout(() => {
                     sendAutoPlayerMessage(autoPlayer.name);

@@ -1,71 +1,90 @@
 @import '../../styles/variables.scss';
 
 .chat {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+
+
+  .label {
     display: flex;
-    flex-direction: column;
-    height: 100%;
-    border: 1px solid $text-color;
-    border-radius: 8px;
-  
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      background-color: $box-bg-color;
-      padding: 10px;
-      border-radius: 8px;
-      color: $white; 
-      .ant-list-item{
-        justify-content: unset;
+    align-items: center;
+    gap: 8px;
+
+    img {
+      max-width: 15px;
+      display: block;
     }
 
-      .chat-message-item {
-        display: flex;
-        align-items: center;
-        
-        .chat-sender {
-          color: $primary-color;
-          margin-right: 8px;
-          font-weight: bold;
-        }
-  
-        .chat-message {
-          background-color: $light-gray;
-          color: $white; // White text inside the bubble
-          padding: 6px 10px;
-          border-radius: 8px;
-        }
-      }
+    label {
+      display: block;
+      color: $white;
+      font-weight: bold;
     }
-  
-    .chat-input-area {
+  }
+
+ .msg-container{
+  border-radius: 8px;
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    background-color: $box-bg-color;
+    padding: 10px;
+    border-radius: 8px;
+    color: $white;
+
+    .ant-list-item {
+      justify-content: unset;
+    }
+
+    .chat-message-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px;
-      background-color: $light-gray;
-  
-      .chat-input {
-        flex: 1;
-        background-color: $background-color; 
-        border: none;
-        color: $white; 
-  
-        &::placeholder {
-          color: $text-color; 
-        }
+
+      .chat-sender {
+        color: $primary-color;
+        margin-right: 8px;
+        font-weight: bold;
       }
-  
-      .chat-send-button {
-        background: $gradient;
+
+      .chat-message {
+        background-color: $light-gray;
+        color: $white; // White text inside the bubble
+        padding: 6px 10px;
         border-radius: 8px;
-        width: 15%;
-        &:hover, &:focus{
-            background: $gradient;
-          }
       }
     }
   }
-  
-  
-  
-  
+
+  .chat-input-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: $light-gray;
+
+    .chat-input {
+      flex: 1;
+      background-color: $background-color;
+      border: none;
+      color: $white;
+
+      &::placeholder {
+        color: $text-color;
+      }
+    }
+
+    .chat-send-button {
+      background: $gradient;
+      border-radius: 8px;
+      width: 15%;
+
+      &:hover,
+      &:focus {
+        background: $gradient;
+      }
+    }
+  }
+}
+}
