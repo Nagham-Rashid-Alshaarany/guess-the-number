@@ -29,6 +29,8 @@ export default function Home() {
         newGame();
         setPoints(1000);
         setStop(generateRandomMultiplier())
+        scheduleAutoPlayerMessages();
+
         const newPlayer = {
             name: 'You',
             pointsPlaced: 1,
@@ -37,7 +39,6 @@ export default function Home() {
             score: 0,
         };
         setPlayers([newPlayer, ...round.players]);
-        scheduleAutoPlayerMessages();
     };
 
     return (

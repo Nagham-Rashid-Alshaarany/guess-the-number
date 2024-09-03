@@ -171,7 +171,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         sendMessage({ sender: autoPlayerName, message: randomMessage });
     }, []);
 
-    const scheduleAutoPlayerMessages = useCallback(() => {
+    const scheduleAutoPlayerMessages = () => {
         state.players
             .filter((player) => player.isAutoPlayer)
             .forEach((autoPlayer) => {
@@ -181,7 +181,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
                     sendAutoPlayerMessage(autoPlayer.name);
                 }, randomInterval);
             });
-    }, []);
+    };
 
     const value = useMemo(() => ({
         round: state,
