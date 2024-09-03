@@ -24,7 +24,7 @@ export default function Chat() {
 
   const getPlayerColor = (sender: string) => {
     const player = players.find(p => p.name === sender);
-    return player ? player.color : { sender: '#F54D5E', message: '#202632' };
+    return player?.color ? player.color : { sender: '#F54D5E', message: '#202632' };
   };
 
   return (
