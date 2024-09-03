@@ -16,12 +16,13 @@ export default function Home() {
         generateAutoPlayers,
         scheduleAutoPlayerMessages,
         newGame, round, setPoints,
-        setStop, setPlayers
+        setStop, setPlayers,stopGame
     } = useGameContext();
 
     useEffect(() => {
         generateAutoPlayers();
         scheduleAutoPlayerMessages();
+
     }, []);
     const [playerName, setPlayerName] = useState<string | null>(null);
 

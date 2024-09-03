@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useGameContext } from '../../context';
 import './GameBoard.scss';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, DotProps } from 'recharts';
+import { Player } from '../../context/GameContext';
 
 interface CustomDotProps extends DotProps {
     index: number;
@@ -20,8 +21,8 @@ const CustomDot = ({ cx, cy, index, dataLength }: CustomDotProps) => {
 };
 
 export default function GameBoard() {
-    const { round, setMultiplier, stopGame } = useGameContext();
-    const { multiplier, multiplierHistory, speed, isRunning ,stop} = round;
+    const { round, setMultiplier, stopGame, setPlayers } = useGameContext();
+    const { multiplier, multiplierHistory, speed, isRunning, stop, isStoped } = round;
 
     useEffect(() => {
         let interval: NodeJS.Timeout | null = null;
@@ -30,22 +31,34 @@ export default function GameBoard() {
             interval = setInterval(() => {
                 setMultiplier((prevMultiplier) => {
                     const newMultiplier = parseFloat((prevMultiplier + 0.01).toFixed(2));
+                    console.log("New multiplier:", newMultiplier);
                     if (newMultiplier >= stop) {
-                        stopGame();
-                        console.log(round.isRunning, round.isStoped)
+                        stopGame(); console.log(isRunning, isStoped)
                         return stop;
                     }
                     return newMultiplier;
                 });
             }, speed);
+
+        }
+
+        if (isStoped) {
+            setPlayers((prevPlayers: Player[]) =>
+                prevPlayers.map((player) => ({
+                    ...player,
+                    won: player.predictedMultiplier <= stop ? true : false,
+                    scor: player.pointsPlaced * player.predictedMultiplier
+                }))
+            );
         }
 
         return () => {
             if (interval) {
+                console.log("Cleaning up interval");
                 clearInterval(interval);
             }
         };
-    }, [isRunning, stop, speed, setMultiplier, stopGame]);
+    }, [isRunning, isStoped]);
 
     const normalizedData = multiplierHistory.map((m) => ({
         x: m,

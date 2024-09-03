@@ -3,7 +3,7 @@ import { Table } from 'antd';
 import { useGameContext } from '../../context';
 import './CurrentRound.scss';
 
-export default function CurrentRound(){
+export default function CurrentRound() {
     const { round } = useGameContext();
     const { players } = round;
 
@@ -24,7 +24,7 @@ export default function CurrentRound(){
             key: 'pointsPlaced',
             render: (text: number, record: any) => (
                 <span className={round.isStoped ? (record.won ? 'won' : 'lost') : ''}>
-                    {text}
+                    {(round.isRunning|| round.isStoped) ? text : '-'}
                 </span>
             ),
         },
@@ -33,8 +33,8 @@ export default function CurrentRound(){
             dataIndex: 'predictedMultiplier',
             key: 'predictedMultiplier',
             render: (text: number, record: any) => (
-                <span className={round.isStoped? (record.won ? 'won' : 'lost') : ''}>
-                    {text.toFixed(2)}
+                <span className={round.isStoped ? (record.won ? 'won' : 'lost') : ''}>
+                    {(round.isRunning || round.isStoped) ? text.toFixed(2) : '-'}
                 </span>
             ),
         },

@@ -1,5 +1,6 @@
-import React, { createContext, useState, ReactNode, useContext } from 'react';
+import React, { createContext, useState, ReactNode, useContext, useEffect, useMemo, useCallback } from 'react';
 import { useWebSocket } from '../hooks';
+import { stat } from 'fs';
 
 export interface Player {
     name: string;
@@ -34,7 +35,7 @@ interface GameContextProps {
     round: GameRound;
     setPoints: (points: number) => void;
     setMultiplier: (multiplier: number | ((prevMultiplier: number) => number)) => void;
-    setPlayers: (players: Player[]|  ((prevPlayers: Player[]) => Player[])) => void;
+    setPlayers: (players: Player[] | ((prevPlayers: Player[]) => Player[])) => void;
     addPlayer: (player: Player) => void;
     setChatMessages: (messages: { sender: string; message: string }[]) => void;
     setSpeed: (speed: number) => void;
@@ -65,13 +66,16 @@ const GameContext = createContext<GameContextProps | undefined>(undefined);
 export const GameProvider = ({ children }: { children: ReactNode }) => {
     const [state, setState] = useState<GameRound>(initialState);
     const { sendMessage } = useWebSocket('ws://localhost:3001');
+    console.log("GameProvider rendered");
+    useEffect(() => {
+        console.log("isStoped changed:", state.isStoped);
+    }, [state.isStoped]);
 
-
-    const setPoints = (points: number) => {
+    const setPoints = useCallback((points: number) => {
         setState((prevState) => ({ ...prevState, points }));
-    };
+    }, []);
 
-    const setMultiplier = (multiplier: number | ((prevMultiplier: number) => number)) => {
+    const setMultiplier = useCallback((multiplier: number | ((prevMultiplier: number) => number)) => {
         setState((prevState) => {
             const newMultiplier = typeof multiplier === 'function' ? multiplier(prevState.multiplier) : multiplier;
 
@@ -82,32 +86,33 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
 
             };
         });
-    };
+    }, []);
 
-    const setPlayers = (players: Player[] | ((prevPlayers: Player[]) => Player[])) => {
+    const setPlayers = useCallback((players: Player[] | ((prevPlayers: Player[]) => Player[])) => {
         setState((prevState) => ({
             ...prevState,
             players: typeof players === 'function' ? players(prevState.players) : players,
-            
+
         }));
-    };
-    const addPlayer = (player: Player) => {
+    }, []);
+
+    const addPlayer = useCallback((player: Player) => {
         setState((prevState) => ({
             ...prevState,
             players: [...prevState.players, player],
         }));
-    };
+    }, []);
 
-    const setSpeed = (speed: number) => {
+    const setSpeed = useCallback((speed: number) => {
         setState((prevState) => ({ ...prevState, speed }));
-    };
+    }, []);
 
-    const setChatMessages = (messages: ChatMessage[]) => {
+    const setChatMessages = useCallback((messages: ChatMessage[]) => {
         setState((prevState) => ({ ...prevState, chatMessages: messages }));
-    };
+    }, []);
 
 
-    const generateAutoPlayers = () => {
+    const generateAutoPlayers = useCallback(() => {
         if (state.autoPlayersGenerated) return;
 
         const autoPlayerNames = ['CPU 1', 'CPU 2', 'CPU 3', 'CPU 4'];
@@ -123,29 +128,41 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         }));
 
         setPlayers([...state.players, ...autoPlayers]);
-        console.log(state.players)
+
         setState((prevState) => ({
             ...prevState,
             autoPlayersGenerated: true,
         }));
-    };
+    }, []);
 
-    const startGame = () => {
-        setState((prevState) => ({ ...prevState, isRunning: true }));
-        setState((prevState) => ({ ...prevState, isStoped: false }));
-    };
+    const startGame = useCallback(() => {
+        setState((prevState) => ({ ...prevState, isRunning: true, isStoped: false }));
 
-    const stopGame = () => {
-        setState((prevState) => ({ ...prevState, isStoped: true }));
-        setState((prevState) => ({ ...prevState, isRunning: false }));
-    };
-    const newGame = () => {
+    }, []);
+
+    const stopGame = useCallback(() => {
+        setState((prevState) => {
+            console.log("Before stopGame:", prevState);
+            return {
+                ...prevState,
+                isStoped: true,
+                isRunning: false,
+
+            };
+        });
+        console.log("aftr stopGame:", state);
+        setTimeout(() => setState((prevState) => ({ ...prevState })), 0);
+    }, []);
+
+    const newGame = useCallback(() => {
         setState((prevState) => ({ ...prevState, started: true }));
-    };
-    const setStop = (stop: number) => {
+    }, []);
+
+    const setStop = useCallback((stop: number) => {
         setState((prevState) => ({ ...prevState, stop }));
-    };
-    const sendAutoPlayerMessage = (autoPlayerName: string) => {
+    }, []);
+
+    const sendAutoPlayerMessage = useCallback((autoPlayerName: string) => {
         const autoPlayerMessages = [
             "I'm going to win this round!",
             "I feel lucky!",
@@ -158,9 +175,9 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         const randomMessage = autoPlayerMessages[Math.floor(Math.random() * autoPlayerMessages.length)];
 
         sendMessage({ sender: autoPlayerName, message: randomMessage });
-    };
+    }, []);
 
-    const scheduleAutoPlayerMessages = () => {
+    const scheduleAutoPlayerMessages = useCallback(() => {
         state.players
             .filter((player) => player.isAutoPlayer)
             .forEach((autoPlayer) => {
@@ -170,24 +187,25 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
                     sendAutoPlayerMessage(autoPlayer.name);
                 }, randomInterval);
             });
-    };
+    }, []);
+
+    const value = useMemo(() => ({
+        round: state,
+        setPoints,
+        setMultiplier,
+        setPlayers,
+        addPlayer,
+        setChatMessages,
+        setSpeed,
+        startGame,
+        stopGame,
+        newGame,
+        setStop,
+        generateAutoPlayers,
+        scheduleAutoPlayerMessages
+    }), [state]);
     return (
-        <GameContext.Provider
-            value={{
-                round: state,
-                setPoints,
-                setMultiplier,
-                setPlayers,
-                addPlayer,
-                setChatMessages,
-                setSpeed,
-                startGame,
-                stopGame,
-                newGame,
-                setStop,
-                generateAutoPlayers,
-                scheduleAutoPlayerMessages
-            }}        >
+        <GameContext.Provider value={value}>
             {children}
         </GameContext.Provider>
     );
