@@ -42,4 +42,18 @@
             width: 50%;
         }
     }
+    @media (max-width:820px) {
+        .player-controls{
+            flex-direction: column;
+            .pl-inputs{
+                width: 100%;
+            }
+        }
+        .results{
+            flex-direction: column;
+            .ranking{
+                width: 100%;
+            }
+        }
+    }
 }
