@@ -1,7 +1,7 @@
 import React, { createContext, useState, ReactNode, useContext } from 'react';
 import { useWebSocket } from '../hooks';
 
-interface Player {
+export interface Player {
     name: string;
     pointsPlaced: number;
     predictedMultiplier: number;
@@ -26,14 +26,15 @@ interface GameRound {
     isRunning: boolean;
     autoPlayersGenerated: boolean,
     started: boolean,
-    stop: number
+    stop: number,
+    isStoped: boolean
 }
 
 interface GameContextProps {
     round: GameRound;
     setPoints: (points: number) => void;
     setMultiplier: (multiplier: number | ((prevMultiplier: number) => number)) => void;
-    setPlayers: (players: Player[]) => void;
+    setPlayers: (players: Player[]|  ((prevPlayers: Player[]) => Player[])) => void;
     addPlayer: (player: Player) => void;
     setChatMessages: (messages: { sender: string; message: string }[]) => void;
     setSpeed: (speed: number) => void;
@@ -55,7 +56,8 @@ const initialState: GameRound = {
     isRunning: false,
     autoPlayersGenerated: false,
     started: false,
-    stop: 0.1
+    stop: 0.1,
+    isStoped: false,
 };
 
 const GameContext = createContext<GameContextProps | undefined>(undefined);
@@ -82,8 +84,12 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         });
     };
 
-    const setPlayers = (players: Player[]) => {
-        setState((prevState) => ({ ...prevState, players }));
+    const setPlayers = (players: Player[] | ((prevPlayers: Player[]) => Player[])) => {
+        setState((prevState) => ({
+            ...prevState,
+            players: typeof players === 'function' ? players(prevState.players) : players,
+            
+        }));
     };
     const addPlayer = (player: Player) => {
         setState((prevState) => ({
@@ -126,10 +132,11 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
 
     const startGame = () => {
         setState((prevState) => ({ ...prevState, isRunning: true }));
-
+        setState((prevState) => ({ ...prevState, isStoped: false }));
     };
 
     const stopGame = () => {
+        setState((prevState) => ({ ...prevState, isStoped: true }));
         setState((prevState) => ({ ...prevState, isRunning: false }));
     };
     const newGame = () => {

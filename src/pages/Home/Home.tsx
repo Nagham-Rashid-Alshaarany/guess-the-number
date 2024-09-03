@@ -16,7 +16,7 @@ export default function Home() {
         generateAutoPlayers,
         scheduleAutoPlayerMessages,
         newGame, round, setPoints,
-        setStop
+        setStop, setPlayers
     } = useGameContext();
 
     useEffect(() => {
@@ -30,6 +30,15 @@ export default function Home() {
         newGame();
         setPoints(1000);
         setStop(generateRandomMultiplier())
+        const newPlayer = {
+            name: 'You',
+            pointsPlaced: 1,
+            predictedMultiplier: 0.01,
+            won: false,
+            score: 0,
+        };
+
+        setPlayers([newPlayer, ...round.players]);
     };
 
     return (

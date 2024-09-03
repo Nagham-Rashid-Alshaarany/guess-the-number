@@ -32,6 +32,7 @@ export default function GameBoard() {
                     const newMultiplier = parseFloat((prevMultiplier + 0.01).toFixed(2));
                     if (newMultiplier >= stop) {
                         stopGame();
+                        console.log(round.isRunning, round.isStoped)
                         return stop;
                     }
                     return newMultiplier;
@@ -44,7 +45,7 @@ export default function GameBoard() {
                 clearInterval(interval);
             }
         };
-    }, [isRunning]);
+    }, [isRunning, stop, speed, setMultiplier, stopGame]);
 
     const normalizedData = multiplierHistory.map((m) => ({
         x: m,

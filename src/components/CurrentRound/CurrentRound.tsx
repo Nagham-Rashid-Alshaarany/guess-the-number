@@ -13,7 +13,7 @@ export default function CurrentRound(){
             dataIndex: 'name',
             key: 'name',
             render: (text: string, record: any) => (
-                <strong className={!round.isRunning ? (record.won ? 'won' : 'lost') : ''}>
+                <strong className={round.isStoped ? (record.won ? 'won' : 'lost') : ''}>
                     {text}
                 </strong>
             ),
@@ -23,7 +23,7 @@ export default function CurrentRound(){
             dataIndex: 'pointsPlaced',
             key: 'pointsPlaced',
             render: (text: number, record: any) => (
-                <span className={!round.isRunning ? (record.won ? 'won' : 'lost') : ''}>
+                <span className={round.isStoped ? (record.won ? 'won' : 'lost') : ''}>
                     {text}
                 </span>
             ),
@@ -33,14 +33,13 @@ export default function CurrentRound(){
             dataIndex: 'predictedMultiplier',
             key: 'predictedMultiplier',
             render: (text: number, record: any) => (
-                <span className={!round.isRunning ? (record.won ? 'won' : 'lost') : ''}>
+                <span className={round.isStoped? (record.won ? 'won' : 'lost') : ''}>
                     {text.toFixed(2)}
                 </span>
             ),
         },
     ];
 
-    console.log(players)
     return (
         <div className="current-round">
             <div className='label'>

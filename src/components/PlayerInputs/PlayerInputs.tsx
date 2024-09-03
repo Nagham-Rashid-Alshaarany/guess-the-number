@@ -3,6 +3,7 @@ import { InputNumber, Button } from 'antd';
 import { useGameContext } from '../../context';
 
 import './PlayerInputs.scss';
+import { Player } from '../../context/GameContext';
 
 export default function PlayerInputs() {
   const { round, setPoints, setMultiplier, startGame, setPlayers } = useGameContext();
@@ -13,17 +14,21 @@ export default function PlayerInputs() {
 
     setPoints(round.points - points);
     startGame();
+    updatePlayer('pointsPlaced', points);
+    updatePlayer('predictedMultiplier', predictedMultiplier);
 
-    const newPlayer = {
-      name: 'You',
-      pointsPlaced: points,
-      predictedMultiplier: predictedMultiplier,
-      won: false,
-      score: 0,
-    };
-
-    setPlayers([...round.players, newPlayer]);
   };
+
+  const updatePlayer = (fieldName: string, value: number) => {
+    setPlayers((prevPlayers: Player[]) =>
+      prevPlayers.map((player) =>
+        player.name === 'You'
+          ? { ...player, [fieldName]: value }
+          : player
+      )
+    );
+  };
+
   const onPointsIncrement = () => {
     setLocalPoints((value) => Math.min(value + 1, round.points))
   };
