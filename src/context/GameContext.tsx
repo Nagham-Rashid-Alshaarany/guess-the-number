@@ -66,10 +66,6 @@ const GameContext = createContext<GameContextProps | undefined>(undefined);
 export const GameProvider = ({ children }: { children: ReactNode }) => {
     const [state, setState] = useState<GameRound>(initialState);
     const { sendMessage } = useWebSocket('ws://localhost:3001');
-    console.log("GameProvider rendered");
-    useEffect(() => {
-        console.log("isStoped changed:", state.isStoped);
-    }, [state.isStoped]);
 
     const setPoints = useCallback((points: number) => {
         setState((prevState) => ({ ...prevState, points }));
@@ -142,7 +138,6 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
 
     const stopGame = useCallback(() => {
         setState((prevState) => {
-            console.log("Before stopGame:", prevState);
             return {
                 ...prevState,
                 isStoped: true,
@@ -150,7 +145,6 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
 
             };
         });
-        console.log("aftr stopGame:", state);
         setTimeout(() => setState((prevState) => ({ ...prevState })), 0);
     }, []);
 

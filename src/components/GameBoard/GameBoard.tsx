@@ -8,7 +8,13 @@ interface CustomDotProps extends DotProps {
     index: number;
     dataLength: number;
 }
-
+const speedMapping: Record<number, number> = {
+    1: 1,
+    2: 0.5,
+    3: 0.3,
+    4: 0.25,
+    5: 0.2,
+};
 const CustomDot = ({ cx, cy, index, dataLength }: CustomDotProps) => {
     const isLastPoint = index === dataLength - 1;
 
@@ -30,16 +36,15 @@ export default function GameBoard() {
         if (isRunning) {
             interval = setInterval(() => {
                 setMultiplier((prevMultiplier) => {
-                    const newMultiplier = parseFloat((prevMultiplier + 0.01).toFixed(2));
-                    console.log("New multiplier:", newMultiplier);
+                    const newMultiplier = parseFloat((prevMultiplier + 0.01 * speed).toFixed(2));
                     if (newMultiplier >= stop) {
-                        stopGame(); console.log(isRunning, isStoped)
+                        stopGame();
                         return stop;
                     }
                     return newMultiplier;
                 });
-            }, speed);
-
+            }, speedMapping[speed]);
+           
         }
 
         if (isStoped) {
@@ -47,7 +52,7 @@ export default function GameBoard() {
                 prevPlayers.map((player) => ({
                     ...player,
                     won: player.predictedMultiplier <= stop ? true : false,
-                    scor: player.pointsPlaced * player.predictedMultiplier
+                    score: player.predictedMultiplier <= stop ? player.pointsPlaced * player.predictedMultiplier: 0
                 }))
             );
         }

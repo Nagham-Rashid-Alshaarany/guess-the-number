@@ -3,11 +3,12 @@ import { Slider } from 'antd';
 import { useGameContext } from '../../context';
 import './SpeedSlider.scss';
 
+
 const SpeedSlider: React.FC = () => {
     const { round, setSpeed } = useGameContext();
 
     const handleSpeedChange = (value: number) => {
-        setSpeed(100 / value);
+        setSpeed(value);
     };
 
     return (

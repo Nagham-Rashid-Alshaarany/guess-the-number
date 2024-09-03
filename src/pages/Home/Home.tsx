@@ -16,15 +16,13 @@ export default function Home() {
         generateAutoPlayers,
         scheduleAutoPlayerMessages,
         newGame, round, setPoints,
-        setStop, setPlayers,stopGame
+        setStop, setPlayers
     } = useGameContext();
-
+    const [playerName, setPlayerName] = useState<string | null>(null);
     useEffect(() => {
         generateAutoPlayers();
-        scheduleAutoPlayerMessages();
-
     }, []);
-    const [playerName, setPlayerName] = useState<string | null>(null);
+
 
     const handleAcceptPlayerName = (name: string) => {
         setPlayerName(name);
@@ -38,8 +36,8 @@ export default function Home() {
             won: false,
             score: 0,
         };
-
         setPlayers([newPlayer, ...round.players]);
+        scheduleAutoPlayerMessages();
     };
 
     return (
