@@ -9,7 +9,6 @@
 
     .x-value {
         text-align: center;
-        color: $white;
         font-size: 48px;
         font-weight: bold;
         position: absolute;
@@ -17,5 +16,11 @@
         top: 30%;
         left: 50%;
         transform: translate(-50%, -70%);
+    }
+    .white{
+        color: $white;
+    }
+    .red{
+        color: $primary-color;
     }
 }

@@ -44,7 +44,7 @@ export default function GameBoard() {
                     return newMultiplier;
                 });
             }, speedMapping[speed]);
-           
+
         }
 
         if (isStoped) {
@@ -52,7 +52,7 @@ export default function GameBoard() {
                 prevPlayers.map((player) => ({
                     ...player,
                     won: player.predictedMultiplier <= stop ? true : false,
-                    score: player.predictedMultiplier <= stop ? player.pointsPlaced * player.predictedMultiplier: 0
+                    score: player.predictedMultiplier <= stop ? player.pointsPlaced * player.predictedMultiplier : 0
                 }))
             );
         }
@@ -72,7 +72,7 @@ export default function GameBoard() {
 
     return (
         <div className="game-board">
-            <div className='x-value' >
+            <div className={`x-value ${!round.isRunning ? 'white' : 'red'}`} >
                 {multiplier.toFixed(2)}x
             </div>
             <ResponsiveContainer width="100%" height={500}>
